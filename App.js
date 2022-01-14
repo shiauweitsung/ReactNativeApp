@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-// import 'react-native-gesture-handler';
 import React from 'react';
 import { useState, useEffect, useRef } from "react";
 import type { Node } from 'react';
@@ -36,7 +35,7 @@ import Page3 from './components/pages/page3';
 import LolScreen from './components/pages/Lol';
 //draw
 
-// import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 // navigator 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -44,33 +43,52 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
-// const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator();
 
-// function Feed() {
-//   return (
-//     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//       <Text>Feed Screen</Text>
-//     </View>
-//   );
-// }
+function Feed() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Feed Screen</Text>
+    </View>
+  );
+}
 
-// function Article() {
-//   return (
-//     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//       <Text>Article Screen</Text>
-//     </View>
-//   );
-// }
+function Article() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Article Screen</Text>
+    </View>
+  );
+}
 
-// function MyDrawer() {
-//   return (
-//     <Drawer.Navigator>
-//       <Drawer.Screen name="Feed" component={Feed} />
-//       <Drawer.Screen name="Article" component={Article} />
-//     </Drawer.Navigator>
-//   );
-// }
-
+function MyDrawer() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Feed" component={Feed} />
+      <Drawer.Screen name="Article" component={Article} options={{ headerShown: false }} />
+    </Drawer.Navigator>
+  );
+}
+function HomeIndex({ navigation, route }) {
+  console.log(navigation.state, 'draw');
+  return (
+    <Drawer.Navigator screenOptions={{
+      drawerStyle: {
+        // backgroundColor: '#c6cbef',
+        width: 240,
+      },
+      headerStyle: {
+        height: 60, // Specify the height of your custom header
+      },
+      drawerPosition: 'left',
+      backBehavior: 'history',
+    }}>
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="LolPage" component={LolScreen} />
+      <Drawer.Screen name="MorePages" component={MoreStackScreen} options={{ headerShown: false }} />
+    </Drawer.Navigator>
+  )
+}
 function HomeScreen({ navigation, route }) {
   useEffect(() => {
     if (route.params?.post) {
@@ -128,6 +146,11 @@ function HomeScreen({ navigation, route }) {
             Go LOL
           </Text>
         </TouchableOpacity>
+      </View>
+      <View>
+        <Button title="Go Draw" onPress={() => {
+          navigation.navigate('Draw')
+        }} />
       </View>
     </View>
   );
@@ -207,11 +230,11 @@ const App: () => Node = () => {
   return (
     <NavigationContainer initialRouteName={'Home'}  >
       <Stack.Navigator>
-        {/* <Stack.Screen name="Draw" component={MyDrawer} /> */}
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Home" component={HomeIndex} options={{ headerShown: false }} />
+        <Stack.Screen name="Draw" component={MyDrawer} options={{ headerShown: true }} />
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="Post" component={Post} />
-        <Stack.Screen name="MorePages" component={MoreStackScreen} options={{ title: '主頁', headerShown: false, }} />
+        {/* <Stack.Screen name="MorePages" component={MoreStackScreen} options={{ title: '主頁', headerShown: false, }} /> */}
         <Stack.Screen name="LolPage" component={LolScreen} />
       </Stack.Navigator>
 
